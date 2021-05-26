@@ -1,4 +1,4 @@
-# 从 Neo Legacy 迁移 到 Neo N3
+# 从 Neo Legacy 迁移到 Neo N3
 
 本文档将指导开发人员将 Neo Legacy 上的全局资产 NEO 和 GAS 跨链转移到 Neo N3。
 
