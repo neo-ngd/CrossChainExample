@@ -176,3 +176,100 @@ C# 示例：
 14. 跨链管理合约调用 Neo N3 的代理合约的 `UnlockAsset` 方法
 15. 代理合约解锁对应资产到用户在 Neo N3 上的地址
 
+## 验证资产转移成功
+
+完成资产跨链转移后，交易所需要查看资产是否到账，操作如下：
+
+1. 通过 [getblock](https://docs.neo.org/docs/zh-cn/reference/rpc/latest-version/api/getblock.html) API 获取每个区块的详情，其中便包括该区块中所有交易的详情；
+
+3. 调用 [getapplicationlog](https://docs.neo.org/docs/zh-cn/reference/rpc/latest-version/api/getapplicationlog.html) API 获取每笔交易的详情，分析交易内容，确认资产转移成功。
+
+### 调用 getapplicationlog
+
+正确安装 [ApplicationLogs 插件](https://github.com/neo-project/neo-modules/releases/download/v3.0.0-rc2/ApplicationLogs.zip) 并启动 Neo-CLI 节点后，可以看到在neo-cli 根目录下生成了一个 ApplicationLogs 文件夹，完整的合约日志会记录到该目录下，每笔 NEP-17 交易会记录在 leveldb 文件中，通过 API 来读取。
+
+以下是一个 API 调用结果：
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "txid": "0xd9aaa1243cae91e063a140239807a9de45f82850130ec36403f44770955dd2d7",
+        "trigger": "Application",
+        "vmstate": "HALT",
+        "gasconsumed": "11819770",
+        "stack": [],
+        "notifications": [
+            {
+                "contract": "0xd2c270ebfc2a1cdd3e470014a4dff7c091f699ec",
+                "eventname": "Transfer",
+                "state": {
+                    "type": "Array",
+                    "value": [
+                        {
+                            "type": "ByteString",
+                            "value": "uXtKzX+CD2HS1NT5rqXrUEmN31U="
+                        },
+                        {
+                            "type": "ByteString",
+                            "value": "7ztGBn8vR7L38EQqojcghdCHCO8="
+                        },
+                        {
+                            "type": "Integer",
+                            "value": "800000000000"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
+```
+
+> [!Note]
+>
+> 失败的 NEP-17 交易也可以上链，因此需要判断虚拟机的状态项 "vmstate" 是否正确（HALT）。如果包含"FAULT"，则说明执行失败，该交易无效。
+
+其中与交易相关的参数如下：
+
+- `contract`：该字符串为智能合约的脚本哈希，对于交易所来说，这里是 NEP17 类型资产的脚本哈希，交易所可以以此来确定资产的唯一性。例如，"0xd2c270ebfc2a1cdd3e470014a4dff7c091f699ec" 就是该NEP17 资产的脚本哈希，是该资产在全网的唯一标识。
+
+- `eventname`：该字段为合约事件标识，跨链交易的 notifications 数组中可能有多个 eventname, 只有 Transfer 关键字的 eventname 才是 NEP17 转账数据。对于交易所来说，应当只监听标识为 Transfer 类型的交易以确认是否为用户的转账交易。
+
+- `state`：对于转账交易，"value" 对应的数组包含以下三个对象：
+
+  - 转出账户：数组中的的第一个对象，类型为 bytearray，值为 "uXtKzX+CD2HS1NT5rqXrUEmN31U="，经过 base64 解码为 ByteArray 后再转换为字符串 "NcphtjgTye3c3ZL5J5nDZhsf3UJMGAjd7o"。
+  
+    > [!Note]
+    >
+    > Neo 中 16 进制值如果前面加 0x，按大端序处理，如果没加 0x，按小端序处理。
+    ```json
+    {
+      "type": "ByteString",
+      "value": "uXtKzX+CD2HS1NT5rqXrUEmN31U="
+    }
+    ```
+  
+   - 转入账户：数组中的第二个对象，类型为 bytearray，值为 "7ztGBn8vR7L38EQqojcghdCHCO8="，经过 base64 解码为 ByteArray 后再转换为字符串 "Nhiuh11SHF4n9FE6G5LuFHHYc7Lgws9U1z"。对于交易所来说，如果该地址为交易所地址，那么该交易是一笔充值交易。
+  
+     ```json
+     {
+       "type": "ByteString",
+       "value": "7ztGBn8vR7L38EQqojcghdCHCO8="
+     }
+     ```
+  
+  - 转账金额：数组中的的第三个对象，因为 decimal 为 8 位，所以实际值是 8000.00000000。
+    
+    ```json
+    {
+      "type": "Integer",
+      "value": "800000000000"
+    }
+    ```
+
+关于文件中 transfer 数据格式的转换，可以参考官方页面 [Neo数据转换](https://neo.org/converter/index)。
+
+
+
