@@ -21,24 +21,29 @@ public class Config {
     private String N3ReceiveAddressStr;
     private String N3Id;
 
+    @Bean
     public Neow3j neow3j(){
         return Neow3j.build(new HttpService(rpcUrl));
     }
 
     // Replace with your wif string
+    @Bean
     public Account account(){
         return Account.fromWIF(wif).build();
     }
 
+    @Bean
     public ScriptHash proxyHash() {
         return new ScriptHash(proxyHashStr);
     }
 
+    @Bean
     public ScriptHash nNeoHash(){
         return new ScriptHash(nNeoHashStr);
     }
 
     // Replace with your address
+    @Bean
     public ScriptHash N3ReceiveAddress(){
         return new ScriptHash(N3ReceiveAddressStr);
     }

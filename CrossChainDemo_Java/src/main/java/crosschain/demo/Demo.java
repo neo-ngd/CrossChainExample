@@ -27,7 +27,7 @@ public class Demo {
 	// amount should carry the decimal of 8, that is, input 10_00000000 for 10 nneo
 	// You should call the mint function first to convert utxo-neo to nneo
 	@PostMapping("/migrate")
-	public void migrateToken(@RequestParam int amount){
+	public String migrateToken(@RequestParam int amount){
 		try {
 			ContractInvocation invoc = new ContractInvocation.Builder(config.neow3j())
 					.contractScriptHash(config.proxyHash())
@@ -43,14 +43,15 @@ public class Demo {
 					.build()
 					.sign()
 					.invoke();
-			System.out.println(invoc.getTransaction().getTxId());
+			return invoc.getTransaction().getTxId();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return "";
 	}
 
 	@PostMapping("/mint")
-	public void mintToken(@RequestParam double lockValue){
+	public String mintToken(@RequestParam double lockValue){
 		try {
 			config.account().updateAssetBalances(config.neow3j());
 			ContractInvocation invoc = new ContractInvocation.Builder(config.neow3j())
@@ -61,9 +62,10 @@ public class Demo {
 					.build()
 					.sign()
 					.invoke();
-			System.out.println(invoc.getTransaction().getTxId());
+			return invoc.getTransaction().getTxId();
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return "";
 	}
 }
