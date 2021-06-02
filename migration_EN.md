@@ -121,6 +121,25 @@ C# example：
             string result = Helper.InvokeRpc(url, "sendrawtransaction", rawdata);
 ```
 
+Java example：
+
+```java
+    Neow3j neow3j = Neow3j.build(new HttpService("http://seed1.ngd.network:20332")); // Neo2 test net
+    Account account = Account.fromWIF("your wif string").build();
+    // nNeo contract hash on Neo2 testnet
+    ScriptHash nNeoHash = new ScriptHash("0x17da3881ab2d050fea414c80b3fa8324d756f60e"); 
+    account.updateAssetBalances(neow3j);
+    ContractInvocation invoc = new ContractInvocation.Builder(neow3j)
+            .contractScriptHash(nNeoHash)
+            .function("mintTokens")
+            .account(account)
+            .output(new RawTransactionOutput(NEOAsset.HASH_ID, lockValue, nNeoHash.toAddress()))
+            .build()
+            .sign()
+            .invoke();
+    String txHash = invoc.getTransaction().getTxId();
+```
+
 ## Cross-chain architecture
 
 In virtue of the cross-chain technology which is of the capability transferring data from one chain to another, our migration adopts the following architecture:
@@ -147,7 +166,8 @@ Before starting the migration, you need to register two side chains and two Rela
 
    > [!Note]
    >
-   > For the C# invocation code example, refer to [demo](https://github.com/neo-ngd/CrossChainExample/blob/main/CrossChainDemo/Demo.cs).
+   > For the C# invocation code example, refer to [c# demo](https://github.com/neo-ngd/CrossChainExample/blob/main/CrossChainDemo/Demo.cs).
+   > For the Java invocation code example, refer to [java demo](https://github.com/neo-ngd/CrossChainExample/tree/main/CrossChainDemo_Java/src/main/java/crosschain/demo).
 
 2. The proxy contract locks the assets to migrate out in its address.
 

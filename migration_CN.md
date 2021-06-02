@@ -121,6 +121,25 @@ C# 示例：
             string result = Helper.InvokeRpc(url, "sendrawtransaction", rawdata);
 ```
 
+Java示例
+
+```java
+    Neow3j neow3j = Neow3j.build(new HttpService("http://seed1.ngd.network:20332")); // Neo2 test net
+    Account account = Account.fromWIF("your wif string").build();
+    // nNeo contract hash on Neo2 testnet
+    ScriptHash nNeoHash = new ScriptHash("0x17da3881ab2d050fea414c80b3fa8324d756f60e"); 
+    account.updateAssetBalances(neow3j);
+    ContractInvocation invoc = new ContractInvocation.Builder(neow3j)
+            .contractScriptHash(nNeoHash)
+            .function("mintTokens")
+            .account(account)
+            .output(new RawTransactionOutput(NEOAsset.HASH_ID, lockValue, nNeoHash.toAddress()))
+            .build()
+            .sign()
+            .invoke();
+    String txHash = invoc.getTransaction().getTxId();
+```
+
 ## 跨链架构
 
 由于跨链天然的具有将数据从一条链转移到另一条链的功能，本次迁移采用跨链的方式，其架构如下图所示：
@@ -147,7 +166,8 @@ C# 示例：
 
    > [!Note]
    >
-   > C# 调用代码请参考 [跨链demo](https://github.com/neo-ngd/CrossChainExample/blob/main/CrossChainDemo/Demo.cs)。
+   > C# 调用代码请参考 [C#版跨链demo](https://github.com/neo-ngd/CrossChainExample/blob/main/CrossChainDemo/Demo.cs)。
+   > Java 调用代码请参考[Java版跨链demo](https://github.com/neo-ngd/CrossChainExample/tree/main/CrossChainDemo_Java/src/main/java/crosschain/demo)。
 
 2. 代理合约将需要迁移的资产锁定在其地址上
 
