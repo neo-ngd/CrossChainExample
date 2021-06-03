@@ -121,7 +121,7 @@ C# 示例：
             string result = Helper.InvokeRpc(url, "sendrawtransaction", rawdata);
 ```
 
-Java示例
+Java 示例：
 
 ```java
     Neow3j neow3j = Neow3j.build(new HttpService("http://seed1.ngd.network:20332")); // Neo2 test net
