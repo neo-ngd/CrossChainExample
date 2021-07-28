@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -27,7 +28,7 @@ public class Demo {
 	// amount should carry the decimal of 8, that is, input 10_00000000 for 10 nneo
 	// You should call the mint function first to convert utxo-neo to nneo
 	@PostMapping("/migrate")
-	public String migrateToken(@RequestParam int amount){
+	public String migrateToken(@RequestParam long amount){
 		try {
 			ContractInvocation invoc = new ContractInvocation.Builder(config.neow3j())
 					.contractScriptHash(config.proxyHash())
@@ -37,7 +38,8 @@ public class Demo {
 							ContractParameter.hash160(config.account().getScriptHash()), //sender's address in little-endian
 							ContractParameter.integer(Integer.valueOf(config.getN3Id())), // N3 chainId
 							ContractParameter.hash160(config.N3ReceiveAddress()), // recipient's address in little-endian
-							ContractParameter.integer(amount) //asset amount to be locked
+							ContractParameter.integer(BigInteger.valueOf(amount)), //asset amount to be locked
+							ContractParameter.integer(Integer.valueOf(config.getProjectIndex()))
 					))
 					.account(config.account())
 					.build()

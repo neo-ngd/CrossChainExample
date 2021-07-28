@@ -20,6 +20,7 @@ public class Config {
     private String nNeoHashStr;
     private String N3ReceiveAddressStr;
     private String N3Id;
+    private String projectIndex;
 
     @Bean
     public Neow3j neow3j(){
