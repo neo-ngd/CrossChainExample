@@ -121,7 +121,7 @@ C# 示例：
             string result = Helper.InvokeRpc(url, "sendrawtransaction", rawdata);
 ```
 
-Java示例
+Java 示例：
 
 ```java
     Neow3j neow3j = Neow3j.build(new HttpService("http://seed1.ngd.network:20332")); // Neo2 test net
@@ -168,6 +168,7 @@ Java示例
    >
    > C# 调用代码请参考 [C#版跨链demo](https://github.com/neo-ngd/CrossChainExample/blob/main/CrossChainDemo/Demo.cs)。
    > Java 调用代码请参考[Java版跨链demo](https://github.com/neo-ngd/CrossChainExample/tree/main/CrossChainDemo_Java/src/main/java/crosschain/demo)。
+   > Javascript 调用代码参考[JS Demo](https://github.com/neo-ngd/CrossChainExample/blob/main/crosschaindemo.js)
 
 2. 代理合约将需要迁移的资产锁定在其地址上
 
