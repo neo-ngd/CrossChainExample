@@ -1,0 +1,14 @@
+{
+  "name": "crosschain_js",
+  "version": "1.0.0",
+  "description": "demo for crosschain service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cityofzion/neon-js": "^4.9.0"
+  }
+}
