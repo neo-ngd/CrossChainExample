@@ -26,6 +26,7 @@ namespace CrossChainDemo
         private static readonly BigInteger N3Id = BigInteger.Parse("11"); //N3跨链Id
         private static readonly byte[] N3ReceiveAddress = new byte[] { }; //N3收款地址
         private static readonly BigInteger migrationAmount = BigInteger.Parse("100"); //资产迁移数量
+        private static readonly BigInteger projectIndex = BigInteger.Parse("10086");//跨链项目index
 
 
         public static void Main() 
@@ -45,6 +46,7 @@ namespace CrossChainDemo
                     new ContractParameter() { Type = ContractParameterType.Integer, Value = N3Id }, // N3 链Id
                     N3ReceiveAddress, // N3收款地址小端序
                     new ContractParameter() { Type = ContractParameterType.Integer, Value = migrationAmount } //资产转移数量
+                    new ContractParameter() { Type = ContractParameterType.Integer, Value = projectIndex }//跨链项目index
                     );
                 script = sb.ToArray();
             }
