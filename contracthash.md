@@ -3,7 +3,7 @@
 | Name | big endian | little endian |
 | ------------------ | ------- | ------- |
 Nep5Proxy	| 0xe7fb2e1d937e71dbbb512e6375746181127282e7	| e782721281617475632e51bbdb717e931d2efbe7	| 
-Migration Wrapper	| 	| 	| 
+Migration Wrapper	| 0x1b20e48cd86d6af552f70847e081c2e9169a57d3	| d3579a16e9c281e04708f752f56a6dd88ce4201b	| 
 nNEO	| 0xf46719e2d16bf50cddcef9d4bbfece901f73cbb6	| b6cb731f90cefebbd4f9cedd0cf56bd1e21967f4	| 
 cGAS	| 0x74f2dc36a68fdc4682034178eb2220729231db76	| 76db3192722022eb7841038246dc8fa636dcf274	| 
 
@@ -24,6 +24,8 @@ FLM	| 0x083ea8071188c7fe5b5e4af96ded222670d76663 |	6366d7702622ed6df94a5e5bfec78
 
 | Name | big endian | little endian |
 | ------------------ | ------- | ------- |
+Nep17Proxy	| 0x385501cb0288b2953db767b0dc971478539456cb	| cb569453781497dcb067b73d95b28802cb015538	| 
+CCMC	| 0x5ba6c543c5a86a85e9ab3f028a4ad849b924fab9	| b9fa24b949d84a8a023fabe9856aa8c543c5a65b	| 
 NEO	| 0xef4073a0f2b305a38ec4050e4d3d28bc40ea63f5	| f563ea40bc283d4d0e05c48ea305b3f2a07340ef	| 
 GAS	| 0xd2a4cff31913016155e38e474a2c06d08be276cf	| cf76e28bd0062c4a478ee35561011319f3cfa4d2	| 
 
